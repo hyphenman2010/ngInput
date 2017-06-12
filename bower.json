@@ -1,0 +1,14 @@
+{
+  "name": "ngInput",
+  "version": "0.0.0",
+  "main": "ngInput.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "angular": "~1.4.9",
+    "angular-ui-bootstrap": "0.13.3"
+  }
+}
