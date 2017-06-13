@@ -1,9 +1,27 @@
+_hkscs
 'use strict';
 
 var commonMod = angular.module('ngInput.common', []);
 
 commonMod.factory('ngInputLocalize', [ '$http', '$rootScope', function($http, $rootScope) {
   var localize = {
+      
+    forDev: false,
+    localData: {
+      "min" : "Input value too small",
+      "max" : "Input value too big",
+      "pattern" : "Input format is incorrect",
+      "email" : "Invalid email format",
+      "required" : "Required DEV DEV",
+      "valid" : "Valid input",
+      "compareTo" : "Not same as New Password",
+      "pwStrength" : "Password strenght smaller than 50",
+      "remainingQty" : "Remaining quantity too small",
+      "duplicated" : "Cannot be duplicated"
+    },
+    
+    langFileUrl: "/assets/js/ngInput/langs/", 
+    
     currentLocaleData : {},
     currentLang : {
       language : "English",
@@ -11,21 +29,32 @@ commonMod.factory('ngInputLocalize', [ '$http', '$rootScope', function($http, $r
       langCode : "en",
       flagCode : "us"
     },
+    
     setLang : function(lang) {
-      $http({
-        method : 'GET',
-        url : localize.getLangUrl(lang),
-        cache : false
-      }).success(function(data) {
-        localize.currentLocaleData = data;
+      
+      if (localize.forDev) {
+        
+        localize.currentLocaleData = localize.localData;
         localize.currentLang = lang;
         $rootScope.$broadcast('localizeLanguageChanged');
-      }).error(function(/* data */) {
-        console.log('Error updating language!');
-      });
+        
+        
+      } else {
+        $http({
+          method : 'GET',
+          url : localize.getLangUrl(lang),
+          cache : false
+        }).success(function(data) {
+          localize.currentLocaleData = data;
+          localize.currentLang = lang;
+          $rootScope.$broadcast('localizeLanguageChanged');
+        }).error(function(/* data */) {
+          console.log('Error updating language!');
+        });
+      }
     },
     getLangUrl : function(lang) {
-      return '/assets/js/ngInput/langs/' + lang.langCode + '.js';
+      return localize.langFileUrl + lang.langCode + '.js';
     },
 
     localizeText : function(sourceText) {
@@ -121,7 +150,9 @@ mod
         '$templateCache',
 
         function(ngInputLocalize, $templateCache) {
+          //ngInputLocalize.forDev = true;
           ngInputLocalize.setLang(ngInputLocalize.currentLang);
+          
 
           var popoverTpl = '<div style="min-width:100px">\
                       <div ng-if="inputValidationPopover.control.$invalid">\
