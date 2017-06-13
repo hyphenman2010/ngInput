@@ -1,4 +1,3 @@
-_hkscs
 'use strict';
 
 var commonMod = angular.module('ngInput.common', []);
