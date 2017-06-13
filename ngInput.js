@@ -332,12 +332,12 @@ mod
           
           //text, email
           var ngInputTextTpl = '<ng-form name="tmpForm"><span class="input-group" ng-class="{\'has-error\': tmpForm.ctrlName.$invalid, \'has-success\': tmpForm.ctrlName.$valid}">\
-            <input required class="form-control" type="{{type}}" ng-model="bindModel" name="ctrlName" ng-pattern="pattern" add-validation ng-model-options="modelOptions" \>\
+            <input required class="form-control" type="{{type}}" ng-model="bindModel" name="ctrlName" ng-pattern="pattern" add-validation ng-model-options="modelOptions" ></input>\
             <span class="input-group-addon" popover-placement="{{popoverPlacement}}" \
             popover-template="\'ngInputPopoverTemplate.html\'" \
             popover-append-to-body={{popoverAppendToBody}} popover-trigger="mouseenter" \
             ng-mouseenter="initInputValidationPopover(tmpForm.ctrlName)"> \
-            <i ng-class="{\'glyphicon glyphicon-info-sign\': tmpForm.ctrlName.$invalid, \'glyphicon glyphicon-ok-sign\': tmpForm.ctrlName.$valid, \'fa fa-spin fa-spinner\': tmpForm.ctrlName.$pending}" />\
+            <i ng-class="{\'glyphicon glyphicon-info-sign\': tmpForm.ctrlName.$invalid, \'glyphicon glyphicon-ok-sign\': tmpForm.ctrlName.$valid, \'fa fa-spin fa-spinner\': tmpForm.ctrlName.$pending}" ></i>\
             </span></span></ng-form>';
 
           $templateCache.put('ngInputTextTemplate.html', ngInputTextTpl);
@@ -351,7 +351,7 @@ mod
           popover-template="\'ngInputPopoverTemplate.html\'" \
           popover-append-to-body="true" popover-trigger="mouseenter" \
           ng-mouseenter="initInputValidationPopover(tmpForm.ctrlName)">\
-          <i ng-class="{\'glyphicon glyphicon-info-sign\': tmpForm.ctrlName.$invalid, \'glyphicon glyphicon-ok-sign\': tmpForm.ctrlName.$valid, \'fa fa-spin fa-spinner\': tmpForm.ctrlName.$pending}"/>\
+          <i ng-class="{\'glyphicon glyphicon-info-sign\': tmpForm.ctrlName.$invalid, \'glyphicon glyphicon-ok-sign\': tmpForm.ctrlName.$valid, \'fa fa-spin fa-spinner\': tmpForm.ctrlName.$pending}" ></i>\
           </span></span></ng-form>';
           
           
@@ -363,12 +363,12 @@ mod
           //option select
           var ngInputSelectTpl = '<ng-form name="tmpForm"><span class="input-group" ng-class="{\'has-error\': tmpForm.ctrlName.$invalid, \'has-success\': tmpForm.ctrlName.$valid}">\
           <select  required class="form-control" ng-model="bindModel" name="ctrlName" \
-          ng-options="{{options}}" add-validation ng-change="callBack()" />\
+          ng-options="{{options}}" add-validation ng-change="callBack()" ></select>\
           <span class="input-group-addon" popover-placement="right" \
           popover-template="\'ngInputPopoverTemplate.html\'" \
           popover-append-to-body="true" popover-trigger="mouseenter" \
           ng-mouseenter="initInputValidationPopover(tmpForm.ctrlName)">\
-          <i ng-class="{\'glyphicon glyphicon-info-sign\': tmpForm.ctrlName.$invalid, \'glyphicon glyphicon-ok-sign\': tmpForm.ctrlName.$valid, \'fa fa-spin fa-spinner\': tmpForm.ctrlName.$pending}"/>\
+          <i ng-class="{\'glyphicon glyphicon-info-sign\': tmpForm.ctrlName.$invalid, \'glyphicon glyphicon-ok-sign\': tmpForm.ctrlName.$valid, \'fa fa-spin fa-spinner\': tmpForm.ctrlName.$pending}"></i>\
           </span></span></ng-form>';
           
           
@@ -382,7 +382,7 @@ mod
                   <input type="text" class="form-control" datepicker-popup="yyyy-MMM-dd"\
                     ng-model="bindModel" is-open="holidayDateIsOpen"\
                     disabled="true" placeholder="yyyy-MMM-dd" name="ctrlName"\
-                    add-validation required />\
+                    add-validation required ></input>\
                   <span class="input-group-btn">\
                     <button type="button" class="btn btn-default"\
                       ng-click=" $event.stopPropagation(); holidayDateIsOpen=true;">\
@@ -393,7 +393,7 @@ mod
                     popover-append-to-body="true" popover-trigger="mouseenter"\
                     ng-mouseenter="initInputValidationPopover(tmpForm.ctrlName)"\
                     ng-class="{\'btn-danger\': tmpForm.ctrlName.$invalid, \'btn-success\': tmpForm.ctrlName.$valid}">\
-                    <i ng-class="{\'glyphicon glyphicon-info-sign\':tmpForm.ctrlName.$invalid, \'glyphicon glyphicon-ok-sign\':tmpForm.ctrlName.$valid, \'fa fa-spin fa-spinner\': tmpForm.ctrlName.$pending}" />\
+                    <i ng-class="{\'glyphicon glyphicon-info-sign\':tmpForm.ctrlName.$invalid, \'glyphicon glyphicon-ok-sign\':tmpForm.ctrlName.$valid, \'fa fa-spin fa-spinner\': tmpForm.ctrlName.$pending}" ></i>\
                     </button>\
                     </span></span></ng-form>';
           
