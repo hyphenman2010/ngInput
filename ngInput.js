@@ -6,18 +6,32 @@ commonMod.factory('ngInputLocalize', [ '$http', '$rootScope', function($http, $r
   var localize = {
       
     forDev: false,
-    localData: {
+    localDataEN: {
       "min" : "Input value too small",
       "max" : "Input value too big",
       "pattern" : "Input format is incorrect",
       "email" : "Invalid email format",
-      "required" : "Required DEV DEV",
+      "required" : "Required",
       "valid" : "Valid input",
       "compareTo" : "Not same as New Password",
       "pwStrength" : "Password strenght smaller than 50",
       "remainingQty" : "Remaining quantity too small",
       "duplicated" : "Cannot be duplicated"
     },
+    
+    localDataZH: {
+      "min" : "輸入數值太小",
+      "max" : "輸入數值太大",
+      "pattern" : "輸入格式不正確",
+      "email" : "電郵格式不正確",
+      "required" : "必需填寫",
+      "valid" : "輸入正確",
+      "compareTo" : "和新密碼不相同",
+      "pwStrength" : "新密碼強度不足50",
+      "remainingQty" : "數量餘值太少",
+      "duplicated" : "不能重複"
+    },
+    
     
     langFileUrl: "/assets/js/ngInput/langs/", 
     
@@ -33,7 +47,10 @@ commonMod.factory('ngInputLocalize', [ '$http', '$rootScope', function($http, $r
       
       if (localize.forDev) {
         
-        localize.currentLocaleData = localize.localData;
+        if (lang.langCode === 'en') {
+          localize.currentLocaleData = localize.localDataEN;
+        } else
+          localize.currentLocaleData = localize.localDataZH;
         localize.currentLang = lang;
         $rootScope.$broadcast('localizeLanguageChanged');
         
