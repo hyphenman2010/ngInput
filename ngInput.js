@@ -81,6 +81,18 @@ commonMod.factory('ngInputLocalize', [ '$http', '$rootScope', function($http, $r
   return localize;
 } ]);
 
+
+commonMod.factory('ngInputConfig', [ '$http', '$rootScope', function($http, $rootScope) {
+  return {
+    debounce: 400
+  }
+} ]);
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+
 var mod = angular.module('ngInput', [ 'ngInput.common' ]);
 
 mod.directive('addValidation', [ '$q', '$timeout', function($q, $timeout) {
@@ -117,6 +129,9 @@ mod.directive('addValidation', [ '$q', '$timeout', function($q, $timeout) {
             if (!result) {
               ctrl.$hasWarning = true;
               ctrl.$warning[key] = true;
+            } else {
+              ctrl.$hasWarning = false;
+              ctrl.$warning[key] = false;
             }
               
             return true;
@@ -136,6 +151,8 @@ mod.directive('addValidation', [ '$q', '$timeout', function($q, $timeout) {
             
             
             tmpPromise.then(function() {
+              ctrl.$hasWarning = false;
+              ctrl.$warning[key] = false;
               //no warning
               defer.resolve();
             }, function() {
@@ -158,7 +175,7 @@ mod.directive('addValidation', [ '$q', '$timeout', function($q, $timeout) {
   };
 } ]);
 
-mod.directive('ngInputText', [ '$q', '$timeout', 'ngInputLocalize', function($q, $timeout, ngInputLocalize) {
+mod.directive('ngInputText', [ '$q', '$timeout', 'ngInputLocalize', 'ngInputConfig', function($q, $timeout, ngInputLocalize, ngInputConfig) {
   return {
     restrict : 'E',
 
@@ -179,10 +196,10 @@ mod.directive('ngInputText', [ '$q', '$timeout', 'ngInputLocalize', function($q,
     templateUrl : 'ngInputTextTemplate.html',
     controller : function($scope) {
 
-      $scope.modelOptions = angular.isDefined($scope.asyncValidators) ? {
+      $scope.modelOptions = angular.isDefined($scope.asyncValidators) || angular.isDefined($scope.warningAsyncValidators) ? {
         'updateOn' : 'default blur',
         'debounce' : {
-          'default' : 400,
+          'default' : ngInputConfig.debounce,
           'blur' : 0
         }
       } : {
@@ -221,7 +238,7 @@ mod.directive('ngInputText', [ '$q', '$timeout', 'ngInputLocalize', function($q,
 
 
 
-mod.directive('ngInputNumber', ['$q', '$timeout', 'ngInputLocalize', function($q, $timeout, localize) {
+mod.directive('ngInputNumber', ['$q', '$timeout', 'ngInputLocalize', 'ngInputConfig', function($q, $timeout, localize, ngInputConfig) {
   return {
     restrict: 'E',
     scope : {
@@ -232,13 +249,19 @@ mod.directive('ngInputNumber', ['$q', '$timeout', 'ngInputLocalize', function($q
       pattern: "=?",
       validators: "=?",
       asyncValidators: "=?",
-      callBack: "&?"
+      callBack: "&?",
+      
+      popoverAppendToBody : "@?",
+      popoverPlacement : "@?",
+      
+      warningValidators : "=?",
+      warningAsyncValidators : "=?"
     },
     templateUrl: 'ngInputNumberTemplate.html',
     
     controller: function($scope) {
       
-      $scope.modelOptions =  angular.isDefined($scope.asyncValidators) ? { 'updateOn': 'default blur', 'debounce': {'default':400, 'blur': 0} } : { 'updateOn': 'default blur', 'debounce': {'default':0, 'blur': 0} };
+      $scope.modelOptions =  angular.isDefined($scope.asyncValidators) || angular.isDefined($scope.warningAsyncValidators) ? { 'updateOn': 'default blur', 'debounce': {'default': ngInputConfig.debounce, 'blur': 0} } : { 'updateOn': 'default blur', 'debounce': {'default':0, 'blur': 0} };
       $scope.min = angular.isDefined($scope.min) ? $scope.min : 1;
       $scope.max = angular.isDefined($scope.max) ? $scope.max : 100000000000;
       $scope.step = angular.isDefined($scope.step) ? $scope.step : 1;
@@ -276,7 +299,13 @@ mod.directive('ngInputSelect', ['$q', '$timeout', 'ngInputLocalize', function($q
       validators: "=?",
       asyncValidators: "=?",
       showValue: "@?",
-      callBack: "&?"
+      callBack: "&?",
+      
+      popoverAppendToBody : "@?",
+      popoverPlacement : "@?",
+      
+      warningValidators : "=?",
+      warningAsyncValidators : "=?"
     },
     templateUrl: 'ngInputSelectTemplate.html',
     
@@ -335,7 +364,12 @@ mod.directive('ngInputDate', ['$q', '$timeout', 'ngInputLocalize', function($q, 
     scope : {
       bindModel: "=",
       validators: "=?",
-      asyncValidators: "=?"
+      asyncValidators: "=?",
+      popoverAppendToBody : "@?",
+      popoverPlacement : "@?",
+      
+      warningValidators : "=?",
+      warningAsyncValidators : "=?"
     },
     templateUrl: 'ngInputDateTemplate.html',
     controller: function($scope) {
