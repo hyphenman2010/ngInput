@@ -1,6 +1,4 @@
-//0.0.1111
-
-'use strict';
+ï»¿'use strict';
 
 var commonMod = angular.module('ngInput.common', []);
 
@@ -22,16 +20,16 @@ commonMod.factory('ngInputLocalize', [ '$http', '$rootScope', function($http, $r
     },
     
     localDataZH: {
-      "min" : "¿é¤J¼Æ­È¤Ó¤p",
-      "max" : "¿é¤J¼Æ­È¤Ó¤j",
-      "pattern" : "¿é¤J®æ¦¡¤£¥¿½T",
-      "email" : "¹q¶l®æ¦¡¤£¥¿½T",
-      "required" : "¥²»İ¶ñ¼g",
-      "valid" : "¿é¤J¥¿½T",
-      "compareTo" : "©M·s±K½X¤£¬Û¦P",
-      "pwStrength" : "·s±K½X±j«×¤£¨¬50",
-      "remainingQty" : "¼Æ¶q¾l­È¤Ó¤Ö",
-      "duplicated" : "¤£¯à­«½Æ"
+      "min" : "è¼¸å…¥æ•¸å€¼å¤ªå°",
+      "max" : "è¼¸å…¥æ•¸å€¼å¤ªå¤§",
+      "pattern" : "è¼¸å…¥æ ¼å¼ä¸æ­£ç¢º", 
+      "email" : "é›»éƒµæ ¼å¼ä¸æ­£ç¢º",
+      "required" : "å¿…éœ€å¡«å¯«",
+      "valid" : "è¼¸å…¥æ­£ç¢º",
+      "compareTo" : "å’Œæ–°å¯†ç¢¼ä¸ç›¸åŒ",
+      "pwStrength" : "æ–°å¯†ç¢¼å¼·åº¦ä¸è¶³50",
+      "remainingQty" : "æ•¸é‡é¤˜å€¼å¤ªå°‘",
+      "duplicated" : "ä¸èƒ½é‡è¤‡"
     },
     
     
@@ -91,6 +89,9 @@ mod.directive('addValidation', [ '$q', '$timeout', function($q, $timeout) {
 
     link : function(scope, elm, attrs, ctrl) {
 
+      
+      
+      
       if (angular.isDefined(scope.validators)) {
         for ( var key in scope.validators) {
           ctrl.$validators[key] = scope.validators[key];
@@ -100,6 +101,56 @@ mod.directive('addValidation', [ '$q', '$timeout', function($q, $timeout) {
       if (angular.isDefined(scope.asyncValidators)) {
         for ( var key in scope.asyncValidators) {
           ctrl.$asyncValidators[key] = scope.asyncValidators[key];
+        }
+      }
+      
+      
+      ctrl.$hasWarning = false;
+      ctrl.$warning = {};
+      if (angular.isDefined(scope.warningValidators)) {
+        
+        for ( var key in scope.warningValidators) {
+          
+          var tmp = function(modelValue, viewValue){
+            var result = scope.warningValidators[key](modelValue, viewValue);
+            
+            if (!result) {
+              ctrl.$hasWarning = true;
+              ctrl.$warning[key] = true;
+            }
+              
+            return true;
+          };
+          ctrl.$validators[key] = tmp;
+        }
+      }
+      
+      if (angular.isDefined(scope.warningAsyncValidators)) {
+        
+        for ( var key in scope.warningAsyncValidators) {
+          
+          var tmp = function(modelValue, viewValue){
+            
+            var defer = $q.defer();
+            var tmpPromise = scope.warningAsyncValidators[key](modelValue, viewValue);
+            
+            
+            tmpPromise.then(function() {
+              //no warning
+              defer.resolve();
+            }, function() {
+              //has warning
+              ctrl.$hasWarning = true;
+              ctrl.$warning[key] = true;
+              
+              //no matter what, return good
+              defer.resolve();
+            });
+            
+             
+            return defer.promise;
+          };
+          ctrl.$asyncValidators[key] = tmp;
         }
       }
 
@@ -118,7 +169,10 @@ mod.directive('ngInputText', [ '$q', '$timeout', 'ngInputLocalize', function($q,
       validators : "=?",
       asyncValidators : "=?",
       popoverAppendToBody : "@?",
-      popoverPlacement : "@?"
+      popoverPlacement : "@?",
+      
+      warningValidators : "=?",
+      warningAsyncValidators : "=?"
     },
 
     
@@ -340,7 +394,12 @@ mod
                           {{getLocalizedText(key);}}\
                         </li>\
                       </div>\
-                      <div ng-if="inputValidationPopover.control.$valid">\
+                      <div ng-if="!inputValidationPopover.control.$invalid && inputValidationPopover.control.$hasWarning ">\
+                        <li ng-repeat="(key, value) in inputValidationPopover.control.$warning">\
+                          {{getLocalizedText(key);}}\
+                        </li>\
+                      </div>\
+                      <div ng-if="inputValidationPopover.control.$valid && !inputValidationPopover.control.$hasWarning ">\
                         <li>\
                           {{getLocalizedText("valid");}}\
                         </li>\
@@ -350,7 +409,7 @@ mod
 
           
           //text, email
-          var ngInputTextTpl = '<ng-form name="tmpForm"><span class="input-group" ng-class="{\'has-error\': tmpForm.ctrlName.$invalid, \'has-success\': tmpForm.ctrlName.$valid}">\
+          var ngInputTextTpl = '<ng-form name="tmpForm"><span class="input-group" ng-class="{\'has-error\': tmpForm.ctrlName.$invalid, \'has-warning\': tmpForm.ctrlName.$hasWarning, \'has-success\': tmpForm.ctrlName.$valid}">\
             <input required class="form-control" type="{{type}}" ng-model="bindModel" name="ctrlName" ng-pattern="pattern" add-validation ng-model-options="modelOptions" ></input>\
             <span class="input-group-addon" popover-placement="{{popoverPlacement}}" \
             popover-template="\'ngInputPopoverTemplate.html\'" \

@@ -1,6 +1,6 @@
 {
   "name": "ngInput",
-  "version": "0.0.10",
+  "version": "0.0.12",
   "main": "ngInput.js",
   "ignore": [
     "**/.*",
@@ -9,6 +9,7 @@
   ],
   "dependencies": {
     "angular": "~1.4.9",
-    "angular-ui-bootstrap": "0.13.3"
+    "angular-ui-bootstrap": "0.13.3",
+    "font-awesome": "4.2.0"
   }
 }
