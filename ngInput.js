@@ -185,6 +185,10 @@ mod.directive('ngInputText', [ '$q', '$timeout', 'ngInputLocalize', 'ngInputConf
       type : "@?",
       validators : "=?",
       asyncValidators : "=?",
+      
+      callBack: "&?",
+      placeholder: "@?", 
+      
       popoverAppendToBody : "@?",
       popoverPlacement : "@?",
       
@@ -444,7 +448,7 @@ mod
           
           //text, email
           var ngInputTextTpl = '<ng-form name="tmpForm"><span class="input-group" ng-class="{\'has-error\': tmpForm.ctrlName.$invalid, \'has-warning\': tmpForm.ctrlName.$hasWarning, \'has-success\': tmpForm.ctrlName.$valid}">\
-            <input required class="form-control" type="{{type}}" ng-model="bindModel" name="ctrlName" ng-pattern="pattern" add-validation ng-model-options="modelOptions" ></input>\
+            <input required class="form-control" type="{{type}}" ng-model="bindModel" name="ctrlName" ng-pattern="pattern" add-validation ng-model-options="modelOptions" ng-change="callBack()" placeholder="{{placeholder}}"></input>\
             <span class="input-group-addon" popover-placement="{{popoverPlacement}}" \
             popover-template="\'ngInputPopoverTemplate.html\'" \
             popover-append-to-body={{popoverAppendToBody}} popover-trigger="mouseenter" \
