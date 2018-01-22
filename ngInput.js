@@ -52,7 +52,7 @@ commonMod.factory('ngInputLocalize', [ '$http', '$rootScope', function($http, $r
         } else
           localize.currentLocaleData = localize.localDataZH;
         localize.currentLang = lang;
-        $rootScope.$broadcast('localizeLanguageChanged');
+        
         
         
       } else {
@@ -63,7 +63,7 @@ commonMod.factory('ngInputLocalize', [ '$http', '$rootScope', function($http, $r
         }).success(function(data) {
           localize.currentLocaleData = data;
           localize.currentLang = lang;
-          $rootScope.$broadcast('localizeLanguageChanged');
+          
         }).error(function(/* data */) {
           console.log('Error updating language!');
         });
@@ -84,7 +84,7 @@ commonMod.factory('ngInputLocalize', [ '$http', '$rootScope', function($http, $r
 
 commonMod.factory('ngInputConfig', [ '$http', '$rootScope', function($http, $rootScope) {
   return {
-    debounce: 400
+    debounce: 500
   }
 } ]);
 
@@ -175,6 +175,31 @@ mod.directive('addValidation', [ '$q', '$timeout', function($q, $timeout) {
   };
 } ]);
 
+/*
+mod.directive('addFormatter', [ '$q', '$timeout', function($q, $timeout) {
+  
+  return {
+    require : 'ngModel',
+    link : function(scope, elm, attrs, ctrl) {
+      
+      //from view to model
+      ctrl.$parsers.push(function(value) {
+        if (value) {
+          var viewValue = value.toLocaleString();
+          ctrl.$viewValue = viewValue;
+          ctrl.$render();
+          console.log("value", value);
+          console.log("after", viewValue);
+          return value;
+        }
+      })
+      
+    }
+  };
+
+} ]);*/
+
+
 mod.directive('ngInputText', [ '$q', '$timeout', 'ngInputLocalize', 'ngInputConfig', function($q, $timeout, ngInputLocalize, ngInputConfig) {
   return {
     restrict : 'E',
@@ -209,7 +234,7 @@ mod.directive('ngInputText', [ '$q', '$timeout', 'ngInputLocalize', 'ngInputConf
       } : {
         'updateOn' : 'default blur',
         'debounce' : {
-          'default' : 0,
+          'default' : ngInputConfig.debounce,
           'blur' : 0
         }
       };
