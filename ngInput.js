@@ -505,9 +505,9 @@ mod
           var ngInputSelectTpl = '<ng-form name="tmpForm"><span class="input-group" ng-class="{\'has-error\': tmpForm.ctrlName.$invalid, \'has-success\': tmpForm.ctrlName.$valid}">\
           <select  required class="form-control" ng-model="bindModel" name="ctrlName" \
           ng-options="{{options}}" add-validation ng-change="callBack()" ></select>\
-          <span class="input-group-addon" popover-placement="right" \
+          <span class="input-group-addon" popover-placement="{{popoverPlacement}}" \
           popover-template="\'ngInputPopoverTemplate.html\'" \
-          popover-append-to-body="true" popover-trigger="mouseenter" \
+          popover-append-to-body={{popoverAppendToBody}} popover-trigger="mouseenter" \
           ng-mouseenter="initInputValidationPopover(tmpForm.ctrlName)">\
           <i ng-class="{\'glyphicon glyphicon-info-sign\': tmpForm.ctrlName.$invalid, \'glyphicon glyphicon-ok-sign\': tmpForm.ctrlName.$valid, \'fa fa-spin fa-spinner\': tmpForm.ctrlName.$pending}"></i>\
           </span></span></ng-form>';
